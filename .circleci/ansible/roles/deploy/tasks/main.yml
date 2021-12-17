@@ -1,0 +1,91 @@
+# ---
+# - name: "Update apt packages"
+#   become: true
+#   apt:
+#     update_cache: yes
+
+# - name: "Upgrade packages"
+#   become: true
+#   apt:
+#     upgrade: yes
+
+# - name: "Remove dependencies that are no longer required"
+#   become: true
+#   apt:
+#     autoremove: yes
+
+# - name: "Install dependencies."
+#   become: true
+#   apt:
+#     name: ["nodejs", "npm", "python3", "tar", "gzip", "git"]
+#     state: latest
+#     update_cache: yes
+
+# - name: "Install pm2"
+#   become: true
+#   npm:
+#     name: pm2
+#     global: yes
+#     production: yes
+#     state: present
+
+# - name: Creates directory
+#   file:
+#     path: /home/backend
+#     state: directory
+
+# - name: Copy backend dist files web server
+#   copy:
+#     src: /root/project/artifact.tar.gz
+#     dest: /home/backend/artifact.tar.gz
+
+# - name: Uncompress Backend
+#   shell: |
+#     cd /home/backend
+#     tar xvzf artifact.tar.gz -C .
+#     ls -la
+    
+# - name: Build and Start PM2
+#   shell: |
+#     cd /home/backend 
+#     npm install
+#     npm run build
+#     pm2 start npm --name backend -- start
+
+
+- name: "upgrade packages."
+  become: true
+  apt:
+    upgrade: "yes"
+- name: "install dependencies."
+  become: true
+  apt:
+    name: ["nodejs", "npm"]
+    update_cache: yes
+
+- name: "copy backend file"
+  become: true
+  copy:
+    src: /root/project/backend
+    dest: /root
+    force: no
+
+    
+- name: "install npm packages"
+  become: true
+  command: npm install --force
+  args:
+    chdir: /root/backend
+
+- name: "compile npm packages"
+  become: true
+  command: npm run build
+  args:
+    chdir: /root/backend
+
+
+- name: "start server"
+  become: true
+  command: pm2 start npm -- run start
+  args:
+    chdir: /root/backend/dist
