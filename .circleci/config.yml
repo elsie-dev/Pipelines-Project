@@ -157,26 +157,19 @@ jobs:
       - run:
           name: Add back-end ip to ansible inventory
           command: |
+            # Your code here
             aws ec2 describe-instances \
-            --query 'Reservations[*].Instances[*].PublicIpAddress' \
-            --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:5}" \
-            --output text >> ~/project/.circleci/ansible/inventory.txt
-            cat .circleci/ansible/inventory.txt
-
-            curl -H "Content-Type: text/plain" -H "token: ${CIRCLE_WORKFLOW_ID}" \
-                --request PUT \
-                --data `aws ec2 describe-instances \
-                  --query 'Reservations[*].Instances[*].PublicIpAddress' \
-                  --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:5}" \
-                  --output text` \
-                https://api.memstash.io/values/backendip
-
+              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --output text >> .circleci/ansible/inventory.txt
+              cat .circleci/ansible/inventory.txt
       - persist_to_workspace:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
-      # Here's where you will add some code to rollback on failure
+#       # Here's where you will add some code to rollback on failure
       - destroy-environment
+
 
   configure-infrastructure:
     docker:
@@ -184,7 +177,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints: ['b1:65:4d:39:16:98:e3:01:db:36:58:be:95:2b:f0:f1']
+          fingerprints: ['b1:65:4d:39:16:98:e3:01:db:36:58:be:95:2b:f0:f1g']
       - attach_workspace:
           at: ~/
 
