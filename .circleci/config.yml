@@ -239,13 +239,13 @@ jobs:
 
             migration_successful=$(cat migrations_dump.log | grep -c "has been executed successfully")
             if [ $migration_successful > 0 ]; then exit 0; else exit 1; fi;
-      - run:
-          name: Send migration results to memstash
-          command: |
-            curl -H "Content-Type: text/plain" \
-              -H "token: 76f9514c-4cdd-4658-88f9-d7a705af6604" \
-              --request PUT --data "1" \
-              https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:5}
+      # - run:
+      #     name: Send migration results to memstash
+      #     command: |
+      #       curl -H "Content-Type: text/plain" \
+      #         -H "token: 76f9514c-4cdd-4658-88f9-d7a705af6604" \
+      #         --request PUT --data "1" \
+      #         https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:5}
       # Here's where you will add some code to rollback on failure
       # - run:
       #     name: Revert migrations
@@ -281,7 +281,7 @@ jobs:
             #   --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:5}" )
 
             BACKEND_IP=$(curl -H "token: ${CIRCLE_WORKFLOW_ID}" \
-              --request GET https://api.memstash.io/values/backendip)
+              # --request GET https://api.memstash.io/values/backendip)commenting on memstash
 
             export API_URL="http://${BACKEND_IP}:3030"
 
@@ -383,8 +383,8 @@ jobs:
             #   exit 1
             # fi
 
-            BACKEND_IP=$(curl -H "token: ${CIRCLE_WORKFLOW_ID}" \
-              --request GET https://api.memstash.io/values/backendip)
+            # BACKEND_IP=$(curl -H "token: ${CIRCLE_WORKFLOW_ID}" \ commenting on memstash
+            #   --request GET https://api.memstash.io/values/backendip)
 
             export BACKEND_STATUS="http://${BACKEND_IP}:3030/api/status"
             echo ${BACKEND_STATUS}
@@ -393,7 +393,7 @@ jobs:
       - run:
           name: Frontend smoke test.
           command: |
-            URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:5}.s3-website-us-west-2.amazonaws.com"
+            URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:5}.s3-website-us-east-1.amazonaws.com"
             echo $URL
             if curl -s ${URL} | grep "Welcome"
             then
