@@ -443,8 +443,6 @@ jobs:
             else
               echo "Fresh Stacks"
             fi
-      - cloudfront-update:
-          requires: [smoke-test]
 
 
 workflows:
@@ -472,3 +470,6 @@ workflows:
           requires: [run-migrations]
       - smoke-test:
           requires: [deploy-backend, deploy-frontend]
+
+      - cloudfront-update:
+          requires: [smoke-test]
