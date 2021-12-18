@@ -428,12 +428,12 @@ jobs:
           name: Update cloudfront distribution
           command: |
 
-            export CIRCLE_WORKFLOW_ID:0:5=$(aws cloudformation \
-              list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
-              --no-paginate --output text)
-            echo "${CIRCLE_WORKFLOW_ID:0:5}"
-            export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
-              --stack-status-filter "CREATE_COMPLETE" --no-paginate --output text))
+            # export CIRCLE_WORKFLOW_ID:0:5=$(aws cloudformation \
+            #   list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
+            #   --no-paginate --output text)
+            # echo "${CIRCLE_WORKFLOW_ID:0:5}"
+            # export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
+            #   --stack-status-filter "CREATE_COMPLETE" --no-paginate --output text))
 
             aws cloudformation deploy \
               --template-file .circleci/files/cloudfront.yml \
@@ -442,13 +442,13 @@ jobs:
               --tags project=udapeople-${CIRCLE_WORKFLOW_ID:0:5}
             echo " Which is this ---> ${STACKS[@]}"
 
-            if [[ "${STACKS[@]}" =~ "${CIRCLE_WORKFLOW_ID:0:5}" ]]; then
-              aws cloudformation delete-stack --stack-name backend-stack-${CIRCLE_WORKFLOW_ID:0:5}
-              aws s3 rb "s3://udapeople-${CIRCLE_WORKFLOW_ID:0:5}" --force --region=$us-east-1
-              aws cloudformation delete-stack --stack-name frontend-stack-${CIRCLE_WORKFLOW_ID:0:5}
-            else
-              echo "Fresh Stacks"
-            fi
+            # if [[ "${STACKS[@]}" =~ "${CIRCLE_WORKFLOW_ID:0:5}" ]]; then
+            #   aws cloudformation delete-stack --stack-name backend-stack-${CIRCLE_WORKFLOW_ID:0:5}
+            #   aws s3 rb "s3://udapeople-${CIRCLE_WORKFLOW_ID:0:5}" --force --region=$us-east-1
+            #   aws cloudformation delete-stack --stack-name frontend-stack-${CIRCLE_WORKFLOW_ID:0:5}
+            # else
+            #   echo "Fresh Stacks"
+            # fi
 
 
 workflows:
