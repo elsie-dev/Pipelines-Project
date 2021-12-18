@@ -385,8 +385,8 @@ jobs:
             #   exit 1
             # fi
 
-            return 1 #for rollback error
-      - revert-migrations
+      #       return 1 #for rollback error
+      # - revert-migrations
 
 
 # commenting some more
