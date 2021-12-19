@@ -444,7 +444,7 @@ jobs:
 
             if [[ "${STACKS[@]}" =~ "${CIRCLE_WORKFLOW_ID:0:5}" ]]; then
               aws cloudformation delete-stack --stack-name backend-stack-${CIRCLE_WORKFLOW_ID:0:5}
-              aws s3 rb "s3://udapeople-${CIRCLE_WORKFLOW_ID:0:5}" --force --region=$AWS_REGION
+              # aws s3 rb "s3://udapeople-${CIRCLE_WORKFLOW_ID:0:5}" --force --region=$AWS_REGION
               aws cloudformation delete-stack --stack-name frontend-stack-${CIRCLE_WORKFLOW_ID:0:5}
             else
               echo "Fresh Stacks"
