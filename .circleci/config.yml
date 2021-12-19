@@ -428,28 +428,26 @@ jobs:
           name: Update cloudfront distribution
           command: |
 
-            export CIRCLE_WORKFLOW_ID:0:5=$(aws cloudformation \
+            export OldWorkflowID=$(aws cloudformation \
               list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
               --no-paginate --output text)
-            echo "${CIRCLE_WORKFLOW_ID:0:5}"
+            echo "${OldWorkflowID}"
             export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
               --stack-status-filter "CREATE_COMPLETE" --no-paginate --output text))
-
             aws cloudformation deploy \
               --template-file .circleci/files/cloudfront.yml \
               --stack-name "udapeople-cloudfront" \
-              --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:5}". \
-              --tags project=udapeople-${CIRCLE_WORKFLOW_ID:0:5}
+              --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:6}" \
+              --tags project=udapeople-${CIRCLE_WORKFLOW_ID:0:6}
             echo " Which is this ---> ${STACKS[@]}"
 
-            if [[ "${STACKS[@]}" =~ "${CIRCLE_WORKFLOW_ID:0:5}" ]]; then
-              aws cloudformation delete-stack --stack-name backend-stack-${CIRCLE_WORKFLOW_ID:0:5}
-              # aws s3 rb "s3://udapeople-${CIRCLE_WORKFLOW_ID:0:5}" --force --region=$AWS_REGION
-              aws cloudformation delete-stack --stack-name frontend-stack-${CIRCLE_WORKFLOW_ID:0:5}
+            if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]; then
+              aws cloudformation delete-stack --stack-name udapeople-backend-${OldWorkflowID}
+              aws s3 rb "s3://udapeople-${OldWorkflowID}" --force --region=$AWS_REGION
+              aws cloudformation delete-stack --stack-name udapeople-frontend-${OldWorkflowID}
             else
               echo "Fresh Stacks"
             fi
-
 
 workflows:
   Deployment:
