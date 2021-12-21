@@ -1,3 +1,5 @@
 URL01 - https://github.com/elsie-dev/Project-Test
 
-URL02 - https://udapeople-fc197.s3.amazonaws.com/index.html
+URL02 - https://udapeople-31ad2.s3.amazonaws.com/index.html
+
+URL05 - http://ec2-54-87-246-102.compute-1.amazonaws.com:9090/targets
