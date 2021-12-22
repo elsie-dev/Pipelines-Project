@@ -1,6 +1,9 @@
 URL01 - https://github.com/elsie-dev/Project-Test
 
-URL02 - https://udapeople-1dd1d.s3.amazonaws.com/index.html
+URL02 - http://udapeople-7a2b7.s3.amazonaws.com/index.html#/employees/new
 
-url03 - https://d3lyua84yp4nny.cloudfront.net
+url03 - http://d3cw4r067s6vei.cloudfront.net/#/employees
 
+url04 - http://3.88.164.186:3030/api/status
+
+url05 - http://ec2-54-208-227-242.compute-1.amazonaws.com:9090/targets
